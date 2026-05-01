@@ -1,0 +1,58 @@
+# --- Unity 自动生成的文件夹 ---
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]serSettings/
+/[Mm]emoryCaptures/
+
+# --- 资源商店及包管理器临时文件 ---
+/[Aa]ssets/AssetStoreTools*
+
+# --- 自动生成的工程文件 (由 Unity 关联 IDE 生成) ---
+# 如果你希望在不同电脑上重新生成这些文件，请忽略它们
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+
+# --- Unity 自动生成的清单文件 ---
+# 仅当你在使用 Unity 早期版本且遇到元数据冲突时才考虑忽略
+# /[Aa]ssets/*.unity.meta
+
+# --- 常见的构建输出目录 ---
+/[Bb]in/
+/[Pp]ython/
+
+# --- IDE 相关的文件夹 (Visual Studio / JetBrains Rider / VS Code) ---
+.vs/
+.gradle/
+.idea/
+.vscode/
+.consulo/
+*.iml
+*.DotSettings.user
+
+# --- 操作系统临时文件 ---
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# --- 崩溃报告 ---
+sysinfo.txt
+
+# --- 可能存在的本地日志 ---
+*.log
