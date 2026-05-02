@@ -1,4 +1,4 @@
-﻿namespace WebApplication1.Models
+﻿namespace GameServer.WebApi.Models
 {
     public class GameDatabaseSettings
     {

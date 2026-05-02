@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using WebApplication1.Models;
+using GameServer.WebApi.Models;
 
-namespace WebApplication1.Controllers
+namespace GameServer.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
