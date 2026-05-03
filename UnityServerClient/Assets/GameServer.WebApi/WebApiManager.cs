@@ -6,9 +6,9 @@ using UnityEngine.Networking;
 
 namespace WebApi
 {
-    public class WebApiGameManager : MonoBehaviour
+    public class WebApiManager : MonoBehaviour
     {
-        [Header("服务器配置")] [SerializeField] private string baseUrl = "http://127.0.0.1:5115/api/";
+        private string _url = "http://127.0.0.1:5115/api/";
 
         private void Start()
         {
@@ -28,7 +28,7 @@ namespace WebApi
 
         public IEnumerator GetPlayerCoroutine(string name, Action<PlayerProfile> onSuccess)
         {
-            string requestUrl = baseUrl + $"player/{name}";
+            string requestUrl = _url + $"player/{name}";
             using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
             {
                 yield return request.SendWebRequest();
@@ -59,7 +59,7 @@ namespace WebApi
             string json = JsonUtility.ToJson(playerProfile);
             // 将字符串转换为字节数组 (二进制流)，以便在 HTTP 网络中传输
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
-            string requestUrl = baseUrl + "player/save";
+            string requestUrl = _url + "player/save";
             using (UnityWebRequest request = new UnityWebRequest(requestUrl, "POST"))
             {
                 // UploadHandlerRaw: 负责发送原始字节流数据
