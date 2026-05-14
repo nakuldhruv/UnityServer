@@ -1,2 +1,2 @@
 # UnityServer
-Building simple Unity servers of various types
+Game Server Research | Stateful & Stateless
