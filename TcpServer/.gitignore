@@ -1,0 +1,66 @@
+## --- .NET 编译产物 ---
+[Bb]in/
+[Oo]bj/
+[Rr]elease/
+[Dd]ebug/
+[Xx]64/
+[Xx]86/
+*.exe
+*.dll
+*.pdb
+*.appref-ms
+
+## --- Visual Studio 缓存与配置 ---
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vsp
+*.vspx
+*.sap
+*.psess
+
+## --- JetBrains Rider / IntelliJ ---
+.idea/
+*.sln.iml
+
+## --- VS Code ---
+.vscode/
+# 如果你想分享调试配置，可以取消注释下面这行
+#!.vscode/launch.json
+
+## --- NuGet 依赖包 ---
+# 现代 .NET 项目依赖通常在本地全局缓存，但有时会出现在 project 目录下
+node_modules/
+packages/
+*.nupkg
+
+## --- 机密信息与本地设置 (核心安全) ---
+# 绝对不要提交包含生产环境数据库密码、API Key 的文件
+# 推荐使用 User Secrets 或 环境变量
+# appsettings.json 通常提交，但以下本地覆盖文件建议忽略：
+appsettings.Development.json
+appsettings.local.json
+
+## --- 发布产物 ---
+# 运行 dotnet publish 默认生成的文件夹
+publish/
+*.SourceGeneratedFiles/
+
+## --- 日志与临时文件 ---
+Logs/
+[Ll]og/
+*.log
+_TestResults/
+TestResults/
+
+## --- 操作系统临时文件 ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## --- Docker 临时文件 ---
+.dockerignore
+# 如果你不想提交 docker-compose 的本地覆盖配置
+# docker-compose.override.yml
