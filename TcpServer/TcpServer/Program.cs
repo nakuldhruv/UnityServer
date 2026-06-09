@@ -1,74 +1,103 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
-var isRunning = true;
-var port = 8888;
-
-var listener = new TcpListener(IPAddress.Any, port);
-listener.Start();
-Console.WriteLine($"TCP server started, listening on port {port}. Press Ctrl+C to stop.");
-
-// Handle Ctrl+C signal to stop the server gracefully
-Console.CancelKeyPress += (sender, e) =>
+public class TcpServer
 {
-    e.Cancel = true;
-    isRunning = false;
-    listener.Stop();
-    Console.WriteLine("Server is stopping...");
-};
+    private TcpListener _listener;
+    private readonly List<TcpClient> _clients = new List<TcpClient>();
+    private bool _isRunning;
 
-// Main loop: continuously accept client connections
-while (isRunning)
-{
-    try
+    public TcpServer(int port)
     {
-        var client = await listener.AcceptTcpClientAsync();
-        // Start an independent task for each client to handle concurrency
-        _ = Task.Run(() => HandleClientAsync(client));
+        _listener = new TcpListener(IPAddress.Any, port);
     }
-    catch (ObjectDisposedException) when (!isRunning)
+
+    public async Task StartAsync()
     {
-        // This exception is expected when the listener is stopped normally, ignore it
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error while accepting connection: {ex.Message}");
-    }
-}
+        _listener.Start();
+        _isRunning = true;
+        Console.WriteLine($"服务器已启动，监听端口: {((IPEndPoint)_listener.LocalEndpoint).Port}");
 
-Console.WriteLine("Server has stopped.");
-
-// Logic to handle a single client
-async Task HandleClientAsync(TcpClient client)
-{
-    var clientEndpoint = client.Client.RemoteEndPoint?.ToString() ?? "unknown";
-    Console.WriteLine($"[{DateTime.Now}] Client connected: {clientEndpoint}");
-
-    try
-    {
-        await using var stream = client.GetStream();
-        var buffer = new byte[1024];
-        int bytesRead;
-
-        while ((bytesRead = await stream.ReadAsync(buffer)) > 0)
+        while (_isRunning)
         {
-            var receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-            Console.WriteLine($"Received from {clientEndpoint}: {receivedMessage}");
-
-            // Echo: send back the received message with a prefix
-            var response = $"Server echo: {receivedMessage}";
-            var responseBytes = Encoding.UTF8.GetBytes(response);
-            await stream.WriteAsync(responseBytes);
+            try
+            {
+                TcpClient client = await _listener.AcceptTcpClientAsync();
+                lock (_clients) _clients.Add(client);
+                Console.WriteLine($"客户端已连接: {client.Client.RemoteEndPoint}");
+                _ = HandleClientAsync(client); // 不等待，并发处理
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"接受客户端异常: {ex.Message}");
+            }
         }
     }
-    catch (Exception ex)
+    private async Task HandleClientAsync(TcpClient client)
     {
-        Console.WriteLine($"Error handling client {clientEndpoint}: {ex.Message}");
+        NetworkStream stream = null;
+        try
+        {
+            stream = client.GetStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            {
+                // 收到数据，转成字符串（假设UTF8编码，且每条消息以换行符结尾）
+                string msg = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Console.WriteLine($"[{client.Client.RemoteEndPoint}] 收到: {msg}");
+
+                // 回显（Echo）
+                byte[] echo = Encoding.UTF8.GetBytes($"Echo: {msg}");
+                await stream.WriteAsync(echo, 0, echo.Length);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"异常: {ex.Message}");
+        }
+        finally
+        {
+            // 手动关闭和释放资源
+            stream?.Close();
+            client.Close();
+            Console.WriteLine($"客户端断开: {client.Client.RemoteEndPoint}");
+        }
     }
-    finally
+
+    public void Stop()
     {
-        client.Close();
-        Console.WriteLine($"[{DateTime.Now}] Client disconnected: {clientEndpoint}");
+        _isRunning = false;
+        _listener?.Stop();
+        lock (_clients)
+        {
+            foreach (var client in _clients)
+                client?.Close();
+            _clients.Clear();
+        }
+        Console.WriteLine("服务器已停止");
+    }
+
+    // 主入口
+    public static async Task Main(string[] args)
+    {
+        int port = 8888; // 默认端口
+        if (args.Length > 0 && int.TryParse(args[0], out int p))
+            port = p;
+
+        var server = new TcpServer(port);
+        Console.CancelKeyPress += (sender, e) =>
+        {
+            e.Cancel = true;
+            server.Stop();
+        };
+
+        await server.StartAsync();
     }
 }
