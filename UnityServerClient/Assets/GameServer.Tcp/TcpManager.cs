@@ -65,19 +65,46 @@ namespace Tcp
         
         private async Task ReceiveLoop()
         {
-            byte[] buffer = new byte[4096];
+            byte[] lenBuffer = new byte[4];
             while (_isConnected && _client.Connected)
             {
                 try
                 {
-                    int bytesRead = await _stream.ReadAsync(buffer, 0, buffer.Length);
-                    if (bytesRead == 0)
+                    int bytesRead = 0;
+                    while (bytesRead < 4)
                     {
-                        Disconnect();
-                        break;
+                        int n = await _stream.ReadAsync(lenBuffer, bytesRead, 4 - bytesRead);
+                        if (n == 0)
+                        {
+                            Disconnect();
+                            return;
+                        }
+                        
+                        bytesRead += n;
                     }
                     
-                    string text = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    int msgLen =  BitConverter.ToInt32(lenBuffer, 0);
+                    if (msgLen <= 0 || msgLen > 1024 * 1024)
+                    {
+                        Disconnect();
+                        return;
+                    }
+                    
+                    byte[] msgBuffer = new byte[msgLen];
+                    bytesRead = 0;
+                    while (bytesRead < msgLen)
+                    {
+                        int n = await _stream.ReadAsync(msgBuffer, bytesRead, msgLen - bytesRead);
+                        if (n == 0)
+                        {
+                            Disconnect();
+                            return;
+                        }
+                        
+                        bytesRead += n;
+                    }
+                    
+                    string text = Encoding.UTF8.GetString(msgBuffer, 0, msgLen);
                     _messageQueue.Enqueue(text);
                 }
                 catch (Exception e)
@@ -92,9 +119,12 @@ namespace Tcp
         {
             if(!_isConnected || _stream == null) return;
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            int len = messageBytes.Length;
+            byte[] lenBytes = BitConverter.GetBytes(len);
             try
             {
-                await _stream.WriteAsync(messageBytes, 0, messageBytes.Length);
+                await _stream.WriteAsync(lenBytes, 0, lenBytes.Length);
+                await _stream.WriteAsync(messageBytes, 0, len);
             }
             catch (Exception e)
             {

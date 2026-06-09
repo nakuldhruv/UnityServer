@@ -44,18 +44,41 @@ public class TcpServer
         try
         {
             stream = client.GetStream();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            byte[] lenBuffer = new byte[4];
+            byte[] msgBuffer;
+            while (true)
             {
-                // 收到数据，转成字符串（假设UTF8编码，且每条消息以换行符结尾）
-                string msg = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                Console.WriteLine($"[{client.Client.RemoteEndPoint}] 收到: {msg}");
+                int bytesRead = 0;
+                while (bytesRead < lenBuffer.Length)
+                {
+                    int n = await stream.ReadAsync(lenBuffer, bytesRead, 4 - bytesRead);
+                    if (n == 0) return;
+                    bytesRead += n;
+                }
 
-                // 回显（Echo）
-                byte[] echo = Encoding.UTF8.GetBytes($"Echo: {msg}");
-                await stream.WriteAsync(echo, 0, echo.Length);
+                int msgLen = BitConverter.ToInt32(lenBuffer, 0);
+                if (msgLen <= 0 || msgLen > 1024 * 1024)
+                {
+                    Console.WriteLine("消息长度非法");
+                    return;
+                }
+
+                msgBuffer = new byte[msgLen];
+                bytesRead = 0;
+                while (bytesRead < msgLen)
+                {
+                    int n = await stream.ReadAsync(msgBuffer, bytesRead, msgLen - bytesRead);
+                    if (n == 0) return;
+                    bytesRead += n;
+                }
+
+                string msg = Encoding.UTF8.GetString(msgBuffer, 0, msgLen);
+                Console.WriteLine(msg);
+
+                byte[] echoData = Encoding.UTF8.GetBytes(msg);
+                byte[] echoLen = BitConverter.GetBytes(echoData.Length);
+                await stream.WriteAsync(echoLen, 0, echoLen.Length);
+                await stream.WriteAsync(echoData, 0, echoData.Length);
             }
         }
         catch (Exception ex)
