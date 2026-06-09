@@ -13,13 +13,21 @@ namespace Tcp
         private int                     _port = 8888;
         private TcpClient               _client;
         private NetworkStream           _stream;
-        private bool                    _isConnected  = false;
+        private bool                    _isConnected;
         private ConcurrentQueue<string> _messageQueue = new();
 
         private async void Awake()
         {
             await Connect();
-            await Send("Tcp");
+            _ = Send("Tcp client send message.");
+        }
+        
+        private void Update()
+        {
+            while (_messageQueue.TryDequeue(out string message))
+            {
+                Debug.Log(message);
+            }
         }
 
         public async Task Connect()
@@ -46,28 +54,13 @@ namespace Tcp
             }
         }
 
-        public async Task Send(string message)
-        {
-            if(!_isConnected || _stream == null) return;
-            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-            try
-            {
-                await _stream.WriteAsync(messageBytes, 0, messageBytes.Length);
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e.Message);
-                throw;
-            }
-        }
-
-        public void Disconnect(string reason = "主动断开")
+        public void Disconnect()
         {
             if(!_isConnected) return;
             _isConnected = false;
             _stream?.Close();
             _client?.Close();
-            Debug.Log(reason);
+            Debug.Log("Disconnected");
         }
         
         private async Task ReceiveLoop()
@@ -94,11 +87,19 @@ namespace Tcp
                 }
             }
         }
-        private void Update()
+        
+        public async Task Send(string message)
         {
-            while (_messageQueue.TryDequeue(out string message))
+            if(!_isConnected || _stream == null) return;
+            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+            try
             {
-                Debug.Log(message);
+                await _stream.WriteAsync(messageBytes, 0, messageBytes.Length);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                throw;
             }
         }
     }

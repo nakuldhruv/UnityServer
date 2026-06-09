@@ -84,12 +84,9 @@ public class TcpServer
         Console.WriteLine("服务器已停止");
     }
 
-    // 主入口
     public static async Task Main(string[] args)
     {
-        int port = 8888; // 默认端口
-        if (args.Length > 0 && int.TryParse(args[0], out int p))
-            port = p;
+        int port = 8888;
 
         var server = new TcpServer(port);
         Console.CancelKeyPress += (sender, e) =>
