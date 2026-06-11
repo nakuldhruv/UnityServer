@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Tcp
 {
-    public class TcpManager : MonoBehaviour
+    public class TcpConnection : MonoBehaviour
     {
         private string                  _ip   = "127.0.0.1";
         private int                     _port = 8888;

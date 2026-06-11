@@ -3,12 +3,11 @@ using System.Collections.Concurrent;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Shared;
 using UnityEngine;
 
 namespace Tcp
 {
-    public class TcpManagerV2 : MonoBehaviour
+    public class TcpConnectionV2 : MonoBehaviour
     {
         [SerializeField] private string _ip   = "127.0.0.1";
         [SerializeField] private int    _port = 8888;
