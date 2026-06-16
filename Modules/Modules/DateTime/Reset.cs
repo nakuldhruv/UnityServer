@@ -1,4 +1,4 @@
-﻿namespace Modules;
+﻿namespace Modules.DateTime;
 
 public partial class Reset
 {
@@ -14,7 +14,7 @@ public partial class Reset
     public void ResetWeekly()
     {
         // 1. 获取当前系统时间（本地时间，注意时区问题）
-        var nowDate = DateTime.Now;
+        var nowDate = System.DateTime.Now;
 
         // 2. 获取当前是星期几（Sunday=0, Monday=1, ..., Saturday=6）
         var currentDayOfWeek = (int)nowDate.DayOfWeek;
@@ -46,16 +46,16 @@ public partial class Reset
 
 public static class DateTimeUtil
 {
-    public static long ToMidnightUnixTimeSeconds(this DateTime dateTime)
+    public static long ToMidnightUnixTimeSeconds(this System.DateTime dateTime)
     {
-        var midnight = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
-        var epoch = new DateTime(1970, 1, 1, 0, 0, 0);
+        var midnight = new System.DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+        var epoch = new System.DateTime(1970, 1, 1, 0, 0, 0);
         return (long)(midnight - epoch).TotalSeconds;
     }
     
-    public static long ToUnixTimeSeconds(this DateTime dateTime)
+    public static long ToUnixTimeSeconds(this System.DateTime dateTime)
     {
-        var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var epoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         var seconds = (long)(dateTime - epoch).TotalSeconds;
         return seconds;
     }

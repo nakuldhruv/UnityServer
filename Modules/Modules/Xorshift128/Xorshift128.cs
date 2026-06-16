@@ -1,4 +1,4 @@
-﻿namespace Modules;
+﻿namespace Modules.Xorshift128;
 
 /// <summary>
 /// Xorshift 128 位伪随机数生成器。
