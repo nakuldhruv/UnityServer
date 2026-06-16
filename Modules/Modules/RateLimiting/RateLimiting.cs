@@ -1,7 +1,6 @@
-﻿namespace Modules.RateLimiting
+﻿namespace Modules;
+
+public class RateLimiting
 {
-    public class RateLimiting
-    {
         
-    }
 }
