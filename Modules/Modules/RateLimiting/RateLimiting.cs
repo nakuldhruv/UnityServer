@@ -1,4 +1,4 @@
-﻿namespace Modules.RateLimiting;
+﻿namespace Modules;
 
 public class RateLimiting
 {

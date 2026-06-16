@@ -1,4 +1,4 @@
-﻿namespace Modules.DateTime;
+﻿namespace Modules;
 
 public partial class Reset
 {
