@@ -1,2 +1,2 @@
 # UnityServer
-Unity Server | Stateful | Stateless | SignalR | Tcp | Udp | Socket | gRPC | WebSocket
+Unity Server | Stateful & Stateless | Network Protocols | Frameworks | Real-time & RESTful
