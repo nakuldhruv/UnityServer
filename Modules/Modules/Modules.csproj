@@ -8,13 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="GlobalLock\" />
-    <Folder Include="Leaderboard\" />
-    <Folder Include="ProducerConsumer\" />
-    <Folder Include="RetryMechanism\" />
-    <Folder Include="SnapshotProcessOfflock\" />
-    <Folder Include="StripedLock\" />
-    <Folder Include="TTLEviction\" />
+    <Compile Remove="Leaderboard\**" />
+    <Compile Remove="ProducerConsumer\**" />
+    <Compile Remove="RetryMechanism\**" />
+    <Compile Remove="SnapshotProcessOfflock\**" />
+    <Compile Remove="TTLEviction\**" />
+    <EmbeddedResource Remove="Leaderboard\**" />
+    <EmbeddedResource Remove="ProducerConsumer\**" />
+    <EmbeddedResource Remove="RetryMechanism\**" />
+    <EmbeddedResource Remove="SnapshotProcessOfflock\**" />
+    <EmbeddedResource Remove="TTLEviction\**" />
+    <None Remove="Leaderboard\**" />
+    <None Remove="ProducerConsumer\**" />
+    <None Remove="RetryMechanism\**" />
+    <None Remove="SnapshotProcessOfflock\**" />
+    <None Remove="TTLEviction\**" />
   </ItemGroup>
 
 </Project>
