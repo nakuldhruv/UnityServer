@@ -8,5 +8,4 @@
 .idea/
 .vs/
 
-*.csproj
-*.sln
+*.DS_Store
