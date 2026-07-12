@@ -1,1 +1,12 @@
 ﻿UnityServerClient_clone_0
+
+**/[Bb]in/
+**/[Oo]bj/
+**/appsettings.Development.json
+*.user
+
+.idea/
+.vs/
+
+*.csproj
+*.sln
