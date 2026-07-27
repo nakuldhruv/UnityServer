@@ -1,5 +1,9 @@
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
+
+builder.Services.AddAuthorization();
 
 app.MapGet("/api/serverlist", () =>
 {
@@ -14,3 +18,7 @@ app.MapPost("/api/login_editor", () => { });
 app.MapPost("/api/login_wx", () => { });
 
 app.Run();
+
+// todo 接入postgres
+// todo postgres配置服务器列表
+// todo 提供不同平台的接口
