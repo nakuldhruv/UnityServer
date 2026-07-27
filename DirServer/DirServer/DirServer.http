@@ -1,0 +1,6 @@
+@DirServer_HostAddress = http://localhost:5293
+
+GET {{DirServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
