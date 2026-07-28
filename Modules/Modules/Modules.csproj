@@ -13,6 +13,8 @@
     <Compile Remove="RetryMechanism\**" />
     <Compile Remove="SnapshotProcessOfflock\**" />
     <Compile Remove="TTLEviction\**" />
+    <Compile Include="Leaderboard\RankList.cs" />
+    <Compile Include="Leaderboard\RankListExample.cs" />
     <EmbeddedResource Remove="Leaderboard\**" />
     <EmbeddedResource Remove="ProducerConsumer\**" />
     <EmbeddedResource Remove="RetryMechanism\**" />

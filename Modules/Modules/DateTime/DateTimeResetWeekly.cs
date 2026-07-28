@@ -1,6 +1,6 @@
 ﻿namespace Modules;
 
-public partial class DateTimeResetWeekly
+public class DateTimeResetWeekly
 {
     private long _lastMondayResetTimestamp;
 
