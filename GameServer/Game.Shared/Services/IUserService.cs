@@ -5,6 +5,5 @@ namespace Game.Shared.Services;
 
 public interface IUserService : IService<IUserService>
 {
-    UnaryResult<UserDto> GetUserAsync(int id);
-    UnaryResult<UserDto> CreateUserAsync(string name);
+    UnaryResult<UserDto> LoginAsync(string username, string password);
 }

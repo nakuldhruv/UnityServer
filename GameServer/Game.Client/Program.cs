@@ -1,15 +1,23 @@
 ﻿using MagicOnion.Client;
-using Game.Shared;
 using Game.Shared.Services;
 using Grpc.Net.Client;
 
-var channel = GrpcChannel.ForAddress("https://localhost:5001"); // 改为你的服务器地址
+var channel = GrpcChannel.ForAddress("http://localhost:5018");
 var client = MagicOnionClient.Create<IUserService>(channel);
 
-// 创建用户
-var newUser = await client.CreateUserAsync("Alice");
-Console.WriteLine($"创建成功: Id={newUser.Id}, Name={newUser.Name}");
+try
+{
+    Console.WriteLine("输入用户名。");
+    var username = Console.ReadLine();
+    Console.WriteLine("输入密码。");
+    var password = Console.ReadLine();
+    var user = await client.LoginAsync(username, password);
+    Console.WriteLine($"✅ 登录成功！欢迎回来，{user.Name} (ID: {user.Id})");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ 登录失败: {ex.Message}");
+}
 
-// 获取用户
-var user = await client.GetUserAsync(newUser.Id);
-Console.WriteLine($"获取用户: Id={user.Id}, Name={user.Name}");
+Console.WriteLine("按任意键退出...");
+Console.ReadKey();
