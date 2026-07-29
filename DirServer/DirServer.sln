@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirServer", "DirServer\DirServer.csproj", "{83F1E4F4-4F4B-4096-83B1-E4C6E977BA5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dir.Server", "Dir.Server\Dir.Server.csproj", "{83F1E4F4-4F4B-4096-83B1-E4C6E977BA5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dir.Client", "Dir.Client\Dir.Client.csproj", "{18D4D72E-26D2-4AA2-82EB-A81A370838B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dir.Shared", "Dir.Shared\Dir.Shared.csproj", "{FB19E385-397B-49DD-8B1A-3CBE686FE169}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +16,13 @@ Global
 		{83F1E4F4-4F4B-4096-83B1-E4C6E977BA5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F1E4F4-4F4B-4096-83B1-E4C6E977BA5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83F1E4F4-4F4B-4096-83B1-E4C6E977BA5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18D4D72E-26D2-4AA2-82EB-A81A370838B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18D4D72E-26D2-4AA2-82EB-A81A370838B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18D4D72E-26D2-4AA2-82EB-A81A370838B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18D4D72E-26D2-4AA2-82EB-A81A370838B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB19E385-397B-49DD-8B1A-3CBE686FE169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB19E385-397B-49DD-8B1A-3CBE686FE169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB19E385-397B-49DD-8B1A-3CBE686FE169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB19E385-397B-49DD-8B1A-3CBE686FE169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,3 @@
-using System.Text;
 using DirServer.Data;
 using DirServer.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +15,6 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     // 自动创建表（如果迁移未应用）
     await db.Database.MigrateAsync();
-
     // 如果表里没有数据，则插入测试数据
     if (!await db.Servers.AnyAsync())
     {
@@ -34,7 +32,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.MapGet("/api/serverlist", async (AppDbContext db) =>
+app.MapGet("/api/server_list", async (AppDbContext db) =>
 {
     var servers = await db.Servers.ToListAsync();
     return servers.Select(s => new
@@ -47,20 +45,4 @@ app.MapGet("/api/serverlist", async (AppDbContext db) =>
     });
 });
 
-app.MapPost("/api/login_editor", () => { });
-app.MapPost("/api/login_wx", () => { });
-
 app.Run();
-
-// todo 接入postgres
-// todo postgres配置服务器列表
-// todo 提供不同平台的接口
-
-/*dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
-dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet add package Microsoft.EntityFrameworkCore.Tools
-dotnet tool install --global dotnet-ef
-
-dotnet ef migrations add InitialCreate
-dotnet ef database update
-*/
