@@ -1,10 +1,10 @@
 ﻿using Game.Server.Data;
-using Game.Server.Entities;        // 新增：引用 UserEntity
+using Game.Server.Entities;
 using MagicOnion;
 using MagicOnion.Server;
 using Game.Shared.Dtos;
 using Game.Shared.Services;
-using Microsoft.EntityFrameworkCore;  // 新增：用于异步查询
+using Microsoft.EntityFrameworkCore;
 
 namespace Game.Server.Services
 {
@@ -17,55 +17,124 @@ namespace Game.Server.Services
             _dbContext = dbContext;
         }
 
-        // ⚠️ 关键改动：方法签名改为 async，返回 UnaryResult<UserDto>
-        public async UnaryResult<UserDto> LoginAsync(string username, string password)
+        public async UnaryResult<ApiResponse<UserDto>> LoginAsync(string username, string password)
         {
-            // 1. 从数据库查询用户（异步）
-            var userEntity = await _dbContext.Users
-                .FirstOrDefaultAsync(u => u.Name == username);
-
-            // 2. 如果用户不存在 → 注册新用户
+            var userEntity = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == username);
+            long maxUserId = await _dbContext.Users.MaxAsync(u => (long?)u.UserId) ?? 100000;
             if (userEntity == null)
             {
-                // 创建新用户实体
+                long newUserId = ++maxUserId;
                 userEntity = new UserEntity
                 {
+                    UserId = newUserId,
                     Name = username,
-                    PasswordHash = password,  // ⚠️ 演示用明文，生产环境应存哈希值
-                    CreatedAt = DateTime.UtcNow
+                    Password = password,
                 };
-
                 // 添加到数据库上下文
                 await _dbContext.Users.AddAsync(userEntity);
                 // 保存到数据库（真正写入）
                 await _dbContext.SaveChangesAsync();
-
-                Console.WriteLine($"✅ 新用户注册成功: {username}");
-
                 // 返回注册后的用户信息（不含密码）
-                return new UserDto
+                return new ApiResponse<UserDto>()
                 {
-                    Id = userEntity.Id,
-                    Name = userEntity.Name,
-                    Password = null
+                    Success = true,
+                    Message = $"新用户注册成功: {username}",
+                    Data = new UserDto()
+                    {
+                        UserId = newUserId,
+                        Name = userEntity.Name,
+                    }
                 };
             }
-
-            // 3. 用户存在 → 验证密码
-            if (userEntity.PasswordHash != password)
+            else
             {
-                throw new Exception("密码错误！");
+                if (userEntity.Password == password)
+                {
+                    return new ApiResponse<UserDto>()
+                    {
+                        Success = userEntity.Password == password,
+                        Message = $"用户登录成功: {username}",
+                        Data = new UserDto()
+                        {
+                            UserId = maxUserId,
+                            Name = userEntity.Name,
+                        }
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<UserDto>()
+                    {
+                        Success = false,
+                        Message = "密码错误！",
+                    };
+                }
             }
+        }
 
-            Console.WriteLine($"✅ 用户登录成功: {username}");
-
-            // 4. 登录成功，返回用户信息
-            return new UserDto
+        public async UnaryResult<ApiResponse<UserDto>> RenameAsync(long userId, string newName)
+        {
+            var userEntity = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userEntity == null)
             {
-                Id = userEntity.Id,
-                Name = userEntity.Name,
-                Password = null
-            };
+                return new ApiResponse<UserDto>()
+                {
+                    Success = false,
+                    Message = $"用户不存在：{userId}"
+                };
+            }
+            else
+            {
+                userEntity.Name = newName;
+                await _dbContext.SaveChangesAsync();
+                return new ApiResponse<UserDto>()
+                {
+                    Success = true,
+                    Message = "修改名称成功。",
+                    Data = new UserDto()
+                    {
+                        UserId = userId,
+                        Name = userEntity.Name,
+                    }
+                };
+            }
+        }
+
+        public async UnaryResult<ApiResponse<UserDto>> ChangePasswordAsync(long userId, string oldPassword, string newPassword)
+        {
+            var userEntity = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userEntity == null)
+            {
+                return new ApiResponse<UserDto>()
+                {
+                    Success = false,
+                    Message = $"用户不存在：{userId}"
+                };
+            }
+            else
+            {
+                if (oldPassword != userEntity.Password)
+                {
+                    return new ApiResponse<UserDto>()
+                    {
+                        Success = false,
+                        Message = $"密码错误：{userId}"
+                    };
+                }
+
+                userEntity.Password = newPassword;
+                await _dbContext.SaveChangesAsync();
+                return new ApiResponse<UserDto>()
+                {
+                    Success = true,
+                    Message = "密码修改成功。",
+                    Data = new UserDto()
+                    {
+                        UserId = userId,
+                        Name = userEntity.Name,
+                    }
+                };
+            }
         }
     }
 }

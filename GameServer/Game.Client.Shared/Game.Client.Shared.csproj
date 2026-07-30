@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Grpc.Net.Client" Version="2.83.0-pre1" />
-      <PackageReference Include="MagicOnion.Client" Version="7.10.2" />
+      <ProjectReference Include="..\Game.Shared\Game.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Game.Shared\Game.Shared.csproj" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.80.0" />
+      <PackageReference Include="MagicOnion.Client" Version="7.10.2" />
     </ItemGroup>
 
 </Project>

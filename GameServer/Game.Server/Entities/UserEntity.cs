@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Game.Server.Entities;
 
@@ -7,7 +6,7 @@ namespace Game.Server.Entities;
 public class UserEntity
 {
     public int Id { get; set; }
+    public long UserId { get; set; }
     public string Name { get; set; }
-    public string PasswordHash { get; set; }  // 生产环境用哈希，演示先存明文
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public string Password { get; set; }
 }
