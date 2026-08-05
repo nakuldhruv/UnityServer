@@ -10,6 +10,9 @@ xorshift128Example.Start();*/
 /*GlobalLockExample globalLockExample = new GlobalLockExample();
 await globalLockExample.StartAsync();*/
 
+/*StripedLockExample stripedLockExample = new StripedLockExample();
+await stripedLockExample.StartAsync();*/
+
 /*RankListBenchmark rankListBenchmark = new RankListBenchmark();
 rankListBenchmark.Start();*/
 
@@ -19,5 +22,5 @@ await rateLimitingExample.StartAsync();*/
 /*RateLimitingPeriodicTimerExample rateLimitingPeriodicTimerExample = new RateLimitingPeriodicTimerExample();
 await rateLimitingPeriodicTimerExample.StartAsync();*/
 
-RetryExample retryExample = new RetryExample();
-await retryExample.StartAsync();
+RetryMechanismExample retryMechanismExample = new RetryMechanismExample();
+await retryMechanismExample.StartAsync();

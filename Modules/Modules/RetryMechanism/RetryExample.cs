@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Modules;
 
-public class RetryExample
+public class RetryMechanismExample
 {
     private int _attemptCount = 0;
 
