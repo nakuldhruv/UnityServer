@@ -4,7 +4,7 @@ using DockerWebApp.Models;
 namespace DockerWebApp.Services;
 
 /// <summary>
-/// 将提交的姓名和邮箱记录持久化到本地 JSON 文件。
+/// 将提交的邮箱记录持久化到本地 JSON 文件。
 /// 文件默认存放在 ContentRoot/AppData/submissions.json，可通过配置项 Storage:DataFile 修改。
 /// </summary>
 public class SubmissionService

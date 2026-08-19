@@ -1,0 +1,55 @@
+﻿@model List<DockerWebApp.Models.Submission>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="hero text-center">
+    <h1 class="display-4 hero-title">邮箱提交</h1>
+    <p class="lead hero-subtitle">留下你的邮箱，保持联系</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="submit-card">
+            <h2 class="h5 mb-3 text-center">提交邮箱</h2>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @Html.ValidationSummary(false, "", new { @class = "mb-0" })
+                </div>
+            }
+
+            <form asp-controller="Home" asp-action="Submit" method="post">
+                <div class="mb-3">
+                    <label for="Email" class="form-label">邮箱</label>
+                    <input type="email" class="form-control form-control-lg" id="Email" name="Email" required maxlength="200" placeholder="name@example.com"/>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-submit btn-lg">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">
+    <h2 class="h4 text-center mb-4">已提交的邮箱</h2>
+
+    @if (Model.Count > 0)
+    {
+        <div class="email-list mx-auto">
+            @foreach (var submission in Model.OrderByDescending(s => s.SubmittedAt))
+            {
+                <div class="email-item">
+                    <span class="email-address">@submission.Email</span>
+                    <span class="email-time">@submission.SubmittedAt.ToString("yyyy-MM-dd HH:mm")</span>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">还没有任何提交，快来做第一个吧！</p>
+    }
+</div>

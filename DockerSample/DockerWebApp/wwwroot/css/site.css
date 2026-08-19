@@ -1,0 +1,178 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4b3f72 100%);
+  background-size: 300% 300%;
+  animation: gradientShift 15s ease infinite;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* ===== 渐变背景流动动画 ===== */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== 淡入上移动画 ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 顶部标题区 ===== */
+.hero {
+  padding: 2.5rem 1rem 0.5rem;
+  animation: fadeInUp 0.8s ease both;
+}
+
+.hero-title {
+  font-weight: 700;
+  background: linear-gradient(90deg, #ffffff, #c9d8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  color: rgba(255, 255, 255, 0.85);
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+/* ===== 提交卡片 ===== */
+.submit-card {
+  background: rgba(255, 255, 255, 0.96);
+  color: #212529;
+  border-radius: 1rem;
+  padding: 1.75rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+.submit-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+}
+
+.submit-card .form-control {
+  border-radius: 0.6rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.submit-card .form-control:focus {
+  border-color: #764ba2;
+  box-shadow: 0 0 0 0.25rem rgba(118, 75, 162, 0.25);
+}
+
+/* ===== 提交按钮 ===== */
+.btn-submit {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.btn-submit:hover,
+.btn-submit:focus {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(118, 75, 162, 0.45);
+  filter: brightness(1.08);
+}
+
+.btn-submit:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ===== 已提交邮箱列表 ===== */
+.email-list {
+  max-width: 560px;
+}
+
+.email-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #212529;
+  border-radius: 0.75rem;
+  padding: 0.8rem 1.1rem;
+  margin-bottom: 0.6rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.email-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.email-address {
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.email-time {
+  color: #6c757d;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* ===== 导航栏 / 页脚适配渐变背景 ===== */
+.navbar-glass {
+  background: rgba(0, 0, 0, 0.18) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.navbar-glass .navbar-brand,
+.navbar-glass .nav-link {
+  color: #fff !important;
+}
+
+.footer {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.footer a {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ===== 其他控件焦点样式 ===== */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}

@@ -1,0 +1,6 @@
+@DockerMultiWebApi_HostAddress = http://localhost:8085
+
+GET {{DockerMultiWebApi_HostAddress}}/joke
+Accept: application/json
+
+###

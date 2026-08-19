@@ -1,0 +1,54 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "每日一笑 · 随机笑话";
+}
+
+<div class="hero">
+    <div class="emoji" aria-hidden="true">😂</div>
+    <h1 class="title">每日一笑</h1>
+    <div class="joke-card">
+        <p class="joke-text">@Model.Joke</p>
+    </div>
+    <a class="refresh-link" asp-page="/Index">换个笑话 ↻</a>
+
+    <section class="env-panel" aria-label="环境信息">
+        <h2 class="env-title">🌍 环境信息</h2>
+        <div class="env-highlights">
+            <div class="env-highlight">
+                <span class="env-label">TEST_ENVIRONMENT</span>
+                <span class="env-value">@(Model.TestEnvironment ?? "（未设置）")</span>
+            </div>
+            <div class="env-highlight">
+                <span class="env-label">ASPNETCORE_ENVIRONMENT</span>
+                <span class="env-value">@(Model.AspNetCoreEnvironment ?? "（未设置）")</span>
+            </div>
+            <div class="env-highlight">
+                <span class="env-label">HOSTNAME</span>
+                <span class="env-value">@(Model.HostName ?? "（未设置）")</span>
+            </div>
+        </div>
+        <details class="env-details">
+            <summary>查看全部环境变量（共 @Model.EnvironmentVariables.Count 个）</summary>
+            <div class="env-table-wrap">
+                <table class="env-table">
+                    <thead>
+                    <tr>
+                        <th>变量名</th>
+                        <th>值</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var kv in Model.EnvironmentVariables)
+                    {
+                        <tr>
+                            <td class="env-key">@kv.Key</td>
+                            <td class="env-key-value">@kv.Value</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </details>
+    </section>
+</div>
