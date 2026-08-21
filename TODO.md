@@ -1,4 +1,4 @@
-编写目录服务器 区分平台
-编写Tcp游戏服务器
-使用具体游戏项目流程编写
-实现具体场景的模块重现，例如同时存储2000名玩家。
+- [ ] TCP服务器Mini框架
+- [ ] CDN服务器
+- [ ] Game Server Db考虑转为MongoDB
+- [ ] Game Server 加入Docker
